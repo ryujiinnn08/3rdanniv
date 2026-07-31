@@ -117,9 +117,10 @@
 
     <!-- Year Tabs -->
     <div class="year-tabs" id="year-tabs">
-      <button class="year-tab active" data-year="1" id="tab-year-1">2023 - 2024</button>
-      <button class="year-tab" data-year="2" id="tab-year-2">2024 - 2025</button>
-      <button class="year-tab" data-year="3" id="tab-year-3">2025 - 2026</button>
+      <button class="year-tab active" data-year="1" id="tab-year-1">2023</button>
+      <button class="year-tab" data-year="2" id="tab-year-2">2024</button>
+      <button class="year-tab" data-year="3" id="tab-year-3">2025</button>
+      <button class="year-tab" data-year="4" id="tab-year-4">2026</button>
     </div>
 
     <!-- Flipbook Area -->
@@ -229,32 +230,39 @@
   </div>
 
   <script>
-    /* ===== PHOTO DATA — All 15 photos in one continuous book ===== */
+    /* ===== PHOTO DATA — 20 real photos across 4 years ===== */
     const allPhotos = [
-      // Year 1 (photos 1-5)
-      { src: 'photos/photo1.png', caption: 'Under the cherry blossoms', date: 'Spring', year: 1 },
-      { src: 'photos/photo2.png', caption: 'Our first picnic', date: 'Summer', year: 1 },
-      { src: 'photos/photo3.png', caption: 'Dancing under the lights', date: 'Autumn', year: 1 },
-      { src: 'photos/photo4.png', caption: 'Sunset at the beach', date: 'Winter', year: 1 },
-      { src: 'photos/photo5.png', caption: 'Cooking together', date: 'Everyday', year: 1 },
-      // Year 2 (photos 6-10)
-      { src: 'photos/photo6.png', caption: 'Stargazing nights', date: 'Spring', year: 2 },
-      { src: 'photos/photo7.png', caption: 'Autumn walks', date: 'Summer', year: 2 },
-      { src: 'photos/photo8.png', caption: 'Rainy day reading', date: 'Autumn', year: 2 },
-      { src: 'photos/photo9.png', caption: 'Biking through the village', date: 'Winter', year: 2 },
-      { src: 'photos/photo10.png', caption: 'Coffee dates', date: 'Everyday', year: 2 },
-      // Year 3 (photos 11-15)
-      { src: 'photos/photo11.png', caption: 'Fireworks on the hill', date: 'Spring', year: 3 },
-      { src: 'photos/photo12.png', caption: 'Garden adventures', date: 'Summer', year: 3 },
-      { src: 'photos/photo13.png', caption: 'Snow day fun', date: 'Autumn', year: 3 },
-      { src: 'photos/photo14.png', caption: 'A walk to remember', date: 'Winter', year: 3 },
-      { src: 'photos/photo15.png', caption: 'Our endless story', date: 'Forever', year: 3 },
+      // 2023 (photos 1-5)
+      { src: 'photos/1.jpg', caption: 'Sweet memories', date: '2023', year: 1 },
+      { src: 'photos/2.jpg', caption: 'Cherished moments', date: '2023', year: 1 },
+      { src: 'photos/3.jpg', caption: 'Cozy nights together', date: '2023', year: 1 },
+      { src: 'photos/4.jpg', caption: 'Happy smiles', date: '2023', year: 1 },
+      { src: 'photos/5.jpg', caption: 'Always by your side', date: '2023', year: 1 },
+      // 2024 (photos 6-10)
+      { src: 'photos/6.jpg', caption: 'Fun adventures', date: '2024', year: 2 },
+      { src: 'photos/7.jpg', caption: 'Dressed up with you', date: '2024', year: 2 },
+      { src: 'photos/8.jpg', caption: 'Campus memories', date: '2024', year: 2 },
+      { src: 'photos/9.jpg', caption: 'Celebrating together', date: '2024', year: 2 },
+      { src: 'photos/10.jpg', caption: 'Special days', date: '2024', year: 2 },
+      // 2025 (photos 11-15)
+      { src: 'photos/11.jpg', caption: 'Sky view dates', date: '2025', year: 3 },
+      { src: 'photos/12.jpg', caption: 'Kayaking adventures', date: '2025', year: 3 },
+      { src: 'photos/13.jpg', caption: 'Fun photo studio', date: '2025', year: 3 },
+      { src: 'photos/14.jpg', caption: 'Evening dates', date: '2025', year: 3 },
+      { src: 'photos/15.jpg', caption: 'Overlooking the city', date: '2025', year: 3 },
+      // 2026 (photos 16-20)
+      { src: 'photos/16.jpg', caption: 'Gallery walks', date: '2026', year: 4 },
+      { src: 'photos/17.jpg', caption: 'Movie & cozy dates', date: '2026', year: 4 },
+      { src: 'photos/18.jpg', caption: 'Horseback riding', date: '2026', year: 4 },
+      { src: 'photos/19.jpg', caption: 'Scenic view points', date: '2026', year: 4 },
+      { src: 'photos/20.jpg', caption: 'Sweet souvenirs', date: '2026', year: 4 },
     ];
 
     const yearMeta = {
-      1: { title: '2023 - 2024', subtitle: 'Where it all began' },
-      2: { title: '2024 - 2025', subtitle: 'Growing stronger together' },
-      3: { title: '2025 - 2026', subtitle: 'And still falling for you' },
+      1: { title: '2023', subtitle: 'Where it all began' },
+      2: { title: '2024', subtitle: 'Growing stronger together' },
+      3: { title: '2025', subtitle: 'Building our dreams' },
+      4: { title: '2026', subtitle: 'And still falling for you' },
     };
 
     /* Page numbers where each year's cover page lands (set after build) */
@@ -346,7 +354,7 @@
       return { w: pageW, h: pageH };
     }
 
-    const yearIcons = { 1: 'heart', 2: 'star', 3: 'sparkle' };
+    const yearIcons = { 1: 'heart', 2: 'star', 3: 'sparkle', 4: 'heart' };
 
     function buildAllPages() {
       let html = '';
@@ -373,7 +381,7 @@
       pageNum++;
 
       // Build each year: section divider + 5 photo pages
-      for (let year = 1; year <= 3; year++) {
+      for (let year = 1; year <= 4; year++) {
         const meta = yearMeta[year];
         const photos = allPhotos.filter(p => p.year === year);
 
@@ -461,7 +469,8 @@
     /* Highlight the year tab based on current page */
     function highlightYearTab(page) {
       let activeYear = 1;
-      if (page >= yearStartPage[3]) activeYear = 3;
+      if (page >= yearStartPage[4]) activeYear = 4;
+      else if (page >= yearStartPage[3]) activeYear = 3;
       else if (page >= yearStartPage[2]) activeYear = 2;
       else activeYear = 1;
 
