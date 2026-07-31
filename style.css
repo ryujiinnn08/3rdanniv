@@ -495,10 +495,57 @@ body {
   position: relative;
 }
 
+/* ===== PHOTO LOADING PLACEHOLDER (PINK + HEART LOADER) ===== */
+.photo-loader-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* User's Custom Heart Loader */
+.loader {
+  width: 50px;
+  aspect-ratio: 1;
+  color: #e8758a;
+  background:
+   radial-gradient(circle at 60% 65%, currentColor 62%, #0000 65%) top left,
+   radial-gradient(circle at 40% 65%, currentColor 62%, #0000 65%) top right,
+   linear-gradient(to bottom left, currentColor 42%,#0000 43%) bottom left ,
+   linear-gradient(to bottom right,currentColor 42%,#0000 43%) bottom right;
+  background-size: 50% 50%;
+  background-repeat: no-repeat;
+  position: relative;
+}
+.loader:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  opacity: 0.4;
+  animation: l3 1s infinite;
+}
+@keyframes l3 {
+  to {transform:scale(1.8);opacity:0}
+}
+
 #flipbook .page-photo {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.4s ease;
   -webkit-user-drag: none;
   -khtml-user-drag: none;
   -moz-user-drag: none;
@@ -506,6 +553,10 @@ body {
   user-drag: none;
   -webkit-user-select: none;
   user-select: none;
+}
+
+#flipbook .page-photo.loaded {
+  opacity: 1;
 }
 
 /* Cover pages */
@@ -747,6 +798,37 @@ body {
 .farewell-card {
   max-width: 440px;
   padding: 2.8rem 2rem 2rem;
+}
+
+.tutorial-card {
+  max-width: 420px;
+  padding: 2.8rem 2rem 2rem;
+  text-align: center;
+}
+
+.tutorial-swipe-anim {
+  width: 52px;
+  height: 52px;
+  margin: 0.5rem auto 1.2rem;
+  color: var(--accent-pink);
+  animation: swipeGuide 2.2s ease-in-out infinite;
+}
+
+.tutorial-swipe-anim svg {
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes swipeGuide {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  50% { transform: translateX(14px) rotate(-12deg); }
+}
+
+.tutorial-btn {
+  margin-top: 1.5rem;
+  display: inline-flex;
+  padding: 0.8rem 2.4rem;
+  font-size: 0.95rem;
 }
 
 .letter-seal {

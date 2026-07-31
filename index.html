@@ -232,6 +232,37 @@
       </div>
     </div>
 
+    <!-- Mini Tutorial Overlay -->
+    <div class="letter-overlay" id="tutorial-overlay">
+      <div class="letter-card tutorial-card">
+        <div class="letter-seal">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+        </div>
+        <h2 class="letter-greeting">Quick Tip ✨</h2>
+        <div class="letter-body" style="text-align: center;">
+          <div class="tutorial-swipe-anim">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/>
+              <path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v6"/>
+              <path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"/>
+              <path d="M18 8a2 2 0 0 1 2 2v4a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.83l1.76 1.76"/>
+            </svg>
+          </div>
+          <p style="text-align: center; font-size: 1rem; color: var(--text-primary); margin-bottom: 0.5rem;">
+            Swipe or drag the pages to view our next picture!
+          </p>
+          <p style="text-align: center; font-size: 0.85rem; color: var(--text-secondary);">
+            You can also tap any year on the timeline above to jump straight to that year.
+          </p>
+        </div>
+        <button class="btn-continue tutorial-btn" id="tutorial-close">
+          Got it! 💕
+        </button>
+      </div>
+    </div>
+
     <!-- Footer -->
     <footer class="site-footer">
       <p>
@@ -323,6 +354,7 @@
         onboarding.style.display = 'none';
         mainApp.classList.add('visible');
         initFlipbook();
+        setTimeout(showTutorial, 400);
       }, 600);
     });
 
@@ -432,7 +464,10 @@
           html += `
             <div class="page photo-page" data-year="${year}">
               <div class="page-content">
-                <img class="page-photo" src="${photo.src}" alt="${photo.caption}" loading="lazy">
+                <div class="photo-loader-bg">
+                  <div class="loader"></div>
+                </div>
+                <img class="page-photo" src="${photo.src}" alt="${photo.caption}" onload="this.classList.add('loaded')" loading="lazy">
                 <div class="page-caption">
                   <h3>${photo.caption}</h3>
                   <span>${photo.date}</span>
@@ -496,6 +531,13 @@
       fixMobileCentering();
       updatePageIndicator(1);
       highlightYearTab(1);
+
+      // Immediately reveal any cached images
+      $('#flipbook img.page-photo').each(function() {
+        if (this.complete && this.naturalHeight !== 0) {
+          $(this).addClass('loaded');
+        }
+      });
     }
 
     function updatePageIndicator(page) {
@@ -723,6 +765,27 @@
     document.getElementById('farewell-overlay').addEventListener('click', (e) => {
       if (e.target === e.currentTarget) {
         e.currentTarget.classList.remove('visible');
+      }
+    });
+
+    /* ===== MINI TUTORIAL MODAL ===== */
+    let tutorialShown = false;
+    function showTutorial() {
+      if (tutorialShown) return;
+      tutorialShown = true;
+      const overlay = document.getElementById('tutorial-overlay');
+      if (overlay) overlay.classList.add('visible');
+    }
+
+    function closeTutorial() {
+      const overlay = document.getElementById('tutorial-overlay');
+      if (overlay) overlay.classList.remove('visible');
+    }
+
+    document.getElementById('tutorial-close').addEventListener('click', closeTutorial);
+    document.getElementById('tutorial-overlay').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) {
+        closeTutorial();
       }
     });
   </script>
