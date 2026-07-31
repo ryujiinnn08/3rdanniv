@@ -330,13 +330,27 @@
     let flipbookInitialized = false;
 
     function getBookDimensions() {
-      const vw = window.innerWidth;
+      const vw = Math.min(window.innerWidth, document.documentElement.clientWidth);
       if (vw <= 480) {
-        return { width: vw - 40, height: Math.round((vw - 40) * 1.35) };
+        const w = Math.min(vw - 32, 340);
+        return { width: w, height: Math.round(w * 1.38) };
       } else if (vw <= 768) {
-        return { width: Math.min(vw - 60, 400), height: Math.round(Math.min(vw - 60, 400) * 1.35) };
+        const w = Math.min(vw - 48, 420);
+        return { width: w, height: Math.round(w * 1.38) };
       } else {
         return { width: 800, height: 500 };
+      }
+    }
+
+    function fixMobileCentering() {
+      if (window.innerWidth <= 768) {
+        const flipbook = $('#flipbook');
+        flipbook.css({
+          'margin-left': '0',
+          'margin-right': '0',
+          'left': '0'
+        });
+        flipbook.find('.page-wrapper').css('left', '0');
       }
     }
 
@@ -462,7 +476,11 @@
         gradients: true,
         elevation: 50,
         when: {
+          turning: function() {
+            setTimeout(fixMobileCentering, 10);
+          },
           turned: function(e, page) {
+            fixMobileCentering();
             updatePageIndicator(page);
             highlightYearTab(page);
             // Show love letter when reaching the last page (back cover)
@@ -475,6 +493,7 @@
       });
 
       flipbookInitialized = true;
+      fixMobileCentering();
       updatePageIndicator(1);
       highlightYearTab(1);
     }
