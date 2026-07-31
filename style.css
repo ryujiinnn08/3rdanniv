@@ -337,42 +337,107 @@ body {
   font-weight: 300;
 }
 
-/* ===== YEAR TABS ===== */
-.year-tabs {
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
+/* ===== ANIMEJS TIMELINE ===== */
+.timeline-wrapper {
+  position: relative;
+  max-width: 600px;
+  margin: 0 auto 2.5rem;
+  padding: 1rem 1.5rem;
 }
 
-.year-tab {
+.timeline-track-bg {
+  position: absolute;
+  top: 2.1rem;
+  left: 3rem;
+  right: 3rem;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  z-index: 1;
+}
+
+.timeline-track-progress {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent-rose), var(--accent-pink), var(--accent-gold));
+  border-radius: 4px;
+  box-shadow: 0 0 12px rgba(232, 117, 138, 0.6);
+  transition: width 0.1s linear;
+}
+
+.timeline-nodes {
   position: relative;
-  padding: 0.65rem 1.8rem;
-  border: 1px solid rgba(232, 117, 138, 0.2);
-  background: var(--bg-card);
-  color: var(--text-secondary);
-  border-radius: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 2;
+}
+
+.timeline-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 0.5rem;
+  outline: none;
+  user-select: none;
+}
+
+.node-ring {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(26, 10, 30, 0.9);
+  border: 2px solid rgba(232, 117, 138, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.node-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.node-year {
   font-family: var(--font-body);
   font-size: 0.85rem;
   font-weight: 500;
-  cursor: pointer;
-  transition: var(--transition-smooth);
-  backdrop-filter: blur(10px);
-  letter-spacing: 0.02em;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  transition: color 0.3s ease, transform 0.3s ease;
 }
 
-.year-tab:hover {
+.timeline-node:hover .node-ring {
   border-color: var(--accent-rose);
-  color: var(--accent-pink);
-  background: rgba(232, 117, 138, 0.1);
+  box-shadow: 0 0 15px rgba(232, 117, 138, 0.4);
 }
 
-.year-tab.active {
-  background: linear-gradient(135deg, var(--accent-rose), #d4668a);
-  color: #fff;
-  border-color: transparent;
-  box-shadow: 0 4px 20px rgba(232, 117, 138, 0.35);
+.timeline-node:hover .node-year {
+  color: var(--accent-pink);
+}
+
+.timeline-node.active .node-ring {
+  border-color: var(--accent-rose);
+  box-shadow: 0 0 20px rgba(232, 117, 138, 0.6);
+}
+
+.timeline-node.active .node-dot {
+  background: var(--accent-rose);
+  transform: scale(1.2);
+}
+
+.timeline-node.active .node-year {
+  color: var(--text-primary);
+  font-weight: 600;
 }
 
 /* ===== FLIPBOOK CONTAINER ===== */
