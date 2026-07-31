@@ -1,0 +1,928 @@
+/* ===== DESIGN TOKENS ===== */
+:root {
+  --bg-primary: #1a0a1e;
+  --bg-secondary: #2d1233;
+  --bg-card: rgba(255, 255, 255, 0.06);
+  --accent-rose: #e8758a;
+  --accent-pink: #f4a0b5;
+  --accent-blush: #fcd5dc;
+  --accent-gold: #d4a853;
+  --accent-lavender: #b8a9d4;
+  --text-primary: #fff5f7;
+  --text-secondary: #d4b8c4;
+  --text-muted: #9a7b8a;
+  --shadow-glow: 0 0 40px rgba(232, 117, 138, 0.25);
+  --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --font-display: 'Playfair Display', serif;
+  --font-body: 'Outfit', sans-serif;
+  --transition-smooth: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ===== RESET & BASE ===== */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===== ANIMATED BACKGROUND ===== */
+.bg-gradient {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: 
+    radial-gradient(ellipse at 20% 50%, rgba(232, 117, 138, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(184, 169, 212, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 80%, rgba(212, 168, 83, 0.08) 0%, transparent 50%),
+    var(--bg-primary);
+  animation: bgShift 12s ease-in-out infinite alternate;
+}
+
+@keyframes bgShift {
+  0% { opacity: 1; }
+  50% { opacity: 0.85; }
+  100% { opacity: 1; }
+}
+
+/* ===== FLOATING PARTICLES ===== */
+.particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  opacity: 0;
+  animation: floatUp linear infinite;
+}
+
+.particle svg {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(100vh) rotate(0deg) scale(0.5);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.6;
+  }
+  90% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateY(-10vh) rotate(360deg) scale(1);
+    opacity: 0;
+  }
+}
+
+/* ===== ONBOARDING SCREEN ===== */
+#onboarding {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-primary);
+  transition: var(--transition-smooth);
+}
+
+#onboarding.fade-out {
+  opacity: 0;
+  transform: scale(1.05);
+  pointer-events: none;
+}
+
+.onboarding-content {
+  text-align: center;
+  max-width: 600px;
+  padding: 2rem;
+  animation: fadeInUp 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  opacity: 0;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.onboarding-icons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+  margin-bottom: 2rem;
+  animation: fadeInUp 1.2s 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  opacity: 0;
+}
+
+.onboarding-icon {
+  width: 36px;
+  height: 36px;
+  color: var(--accent-rose);
+  animation: pulse 2s ease-in-out infinite;
+  filter: drop-shadow(0 0 8px rgba(232, 117, 138, 0.4));
+}
+
+.onboarding-icon:nth-child(2) {
+  animation-delay: 0.3s;
+  color: var(--accent-pink);
+}
+
+.onboarding-icon:nth-child(3) {
+  animation-delay: 0.6s;
+  color: var(--accent-gold);
+}
+
+.onboarding-icon:nth-child(4) {
+  animation-delay: 0.9s;
+  color: var(--accent-lavender);
+}
+
+.onboarding-icon:nth-child(5) {
+  animation-delay: 1.2s;
+  color: var(--accent-blush);
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+.onboarding-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 5vw, 3.2rem);
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 0.8rem;
+  background: linear-gradient(135deg, var(--accent-rose), var(--accent-pink), var(--accent-gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: fadeInUp 1.2s 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  opacity: 0;
+}
+
+.onboarding-subtitle {
+  font-family: var(--font-body);
+  font-size: clamp(0.95rem, 2.5vw, 1.2rem);
+  color: var(--text-secondary);
+  margin-bottom: 2.5rem;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  animation: fadeInUp 1.2s 0.9s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  opacity: 0;
+}
+
+.onboarding-divider {
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-rose), transparent);
+  margin: 0 auto 2.5rem;
+  animation: fadeInUp 1.2s 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  opacity: 0;
+}
+
+.btn-continue {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1rem 2.8rem;
+  background: linear-gradient(135deg, var(--accent-rose), #d4668a);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: var(--transition-bounce);
+  box-shadow: 0 4px 20px rgba(232, 117, 138, 0.4);
+  animation: fadeInUp 1.2s 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  opacity: 0;
+  overflow: hidden;
+}
+
+.btn-continue::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.6s ease;
+}
+
+.btn-continue:hover::before {
+  left: 100%;
+}
+
+.btn-continue:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 8px 30px rgba(232, 117, 138, 0.5);
+}
+
+.btn-continue:active {
+  transform: translateY(-1px) scale(0.98);
+}
+
+.btn-continue svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.3s ease;
+}
+
+.btn-continue:hover svg {
+  transform: translateX(4px);
+}
+
+/* ===== MAIN APP ===== */
+#main-app {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+}
+
+#main-app.visible {
+  display: block;
+  opacity: 1;
+}
+
+/* ===== PAGE HEADER ===== */
+.page-header {
+  text-align: center;
+  padding: 2rem 1rem 1.5rem;
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+.page-header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1.2rem;
+  background: var(--bg-card);
+  border: 1px solid rgba(232, 117, 138, 0.2);
+  border-radius: 50px;
+  font-size: 0.8rem;
+  color: var(--accent-pink);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  backdrop-filter: blur(10px);
+}
+
+.page-header-badge svg {
+  width: 14px;
+  height: 14px;
+}
+
+.page-header h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 4vw, 2.6rem);
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--accent-rose), var(--accent-pink), var(--accent-lavender));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+}
+
+.page-header p {
+  color: var(--text-secondary);
+  font-size: clamp(0.85rem, 2vw, 1rem);
+  font-weight: 300;
+}
+
+/* ===== YEAR TABS ===== */
+.year-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.year-tab {
+  position: relative;
+  padding: 0.65rem 1.8rem;
+  border: 1px solid rgba(232, 117, 138, 0.2);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  border-radius: 50px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  backdrop-filter: blur(10px);
+  letter-spacing: 0.02em;
+}
+
+.year-tab:hover {
+  border-color: var(--accent-rose);
+  color: var(--accent-pink);
+  background: rgba(232, 117, 138, 0.1);
+}
+
+.year-tab.active {
+  background: linear-gradient(135deg, var(--accent-rose), #d4668a);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 4px 20px rgba(232, 117, 138, 0.35);
+}
+
+/* ===== FLIPBOOK CONTAINER ===== */
+.flipbook-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  position: relative;
+}
+
+.flipbook-container {
+  position: relative;
+  perspective: 2000px;
+}
+
+#flipbook {
+  position: relative;
+  margin: 0 auto;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  cursor: grab;
+}
+
+#flipbook:active {
+  cursor: grabbing;
+}
+
+#flipbook .page {
+  background: #fdf6f0;
+  overflow: hidden;
+}
+
+/* All page children must not capture mouse events,
+   so turn.js can handle drag on the .page itself */
+#flipbook .page-content,
+#flipbook .page-photo,
+#flipbook .page-caption,
+#flipbook .page-caption h3,
+#flipbook .page-caption span,
+#flipbook .page-number,
+#flipbook .cover-page h2,
+#flipbook .cover-page p,
+#flipbook .cover-page .cover-icon {
+  pointer-events: none;
+}
+
+#flipbook .page-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+#flipbook .page-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Cover pages */
+#flipbook .cover-page {
+  background: linear-gradient(145deg, #2d1233, #1a0a1e);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Fixed-size inner wrapper prevents content morphing during flip animation.
+   Turn.js dynamically changes the .page width during animation, but this
+   inner div keeps its explicit pixel dimensions stable. */
+#flipbook .cover-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  pointer-events: none;
+}
+
+#flipbook .cover-page .cover-icon {
+  width: 48px;
+  height: 48px;
+  color: var(--accent-rose);
+  margin-bottom: 1.5rem;
+  filter: drop-shadow(0 0 12px rgba(232, 117, 138, 0.5));
+}
+
+#flipbook .cover-page h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  color: var(--accent-blush);
+  margin-bottom: 0.5rem;
+  white-space: nowrap;
+}
+
+#flipbook .cover-page p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 300;
+  white-space: nowrap;
+}
+
+/* Year divider pages (section breaks within the book) */
+#flipbook .year-divider {
+  background: linear-gradient(145deg, #2d1233, #1f0d26);
+}
+
+/* Photo pages with caption overlay */
+#flipbook .photo-page {
+  position: relative;
+}
+
+#flipbook .page-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.5rem 1rem 1rem;
+  background: linear-gradient(transparent, rgba(26, 10, 30, 0.85));
+  color: #fff;
+}
+
+#flipbook .page-caption h3 {
+  font-family: var(--font-display);
+  font-size: clamp(0.8rem, 2vw, 1rem);
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+}
+
+#flipbook .page-caption span {
+  font-size: 0.7rem;
+  color: var(--accent-pink);
+  font-weight: 300;
+  letter-spacing: 0.05em;
+}
+
+/* ===== NAVIGATION CONTROLS ===== */
+.book-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid rgba(232, 117, 138, 0.3);
+  background: var(--bg-card);
+  color: var(--accent-pink);
+  cursor: pointer;
+  transition: var(--transition-bounce);
+  backdrop-filter: blur(10px);
+}
+
+.nav-btn:hover {
+  background: var(--accent-rose);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 4px 16px rgba(232, 117, 138, 0.4);
+  transform: scale(1.1);
+}
+
+.nav-btn:active {
+  transform: scale(0.95);
+}
+
+.nav-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.page-indicator {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  min-width: 80px;
+  text-align: center;
+}
+
+/* ===== BOOK TEXTURE ===== */
+#flipbook .page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    linear-gradient(90deg, rgba(0,0,0,0.03) 0%, transparent 5%, transparent 95%, rgba(0,0,0,0.03) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ===== PAGE NUMBER ===== */
+.page-number {
+  position: absolute;
+  bottom: 8px;
+  font-size: 0.65rem;
+  color: rgba(0,0,0,0.3);
+  font-family: var(--font-body);
+  z-index: 2;
+}
+
+.page-number.left {
+  left: 12px;
+}
+
+.page-number.right {
+  right: 12px;
+}
+
+/* ===== DRAG / SWIPE HINT ===== */
+.swipe-hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  animation: fadeInOut 3s ease-in-out infinite;
+  transition: opacity 0.5s ease;
+}
+
+.swipe-hint svg {
+  width: 16px;
+  height: 16px;
+  animation: swipeAnim 1.5s ease-in-out infinite;
+}
+
+@keyframes swipeAnim {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(8px); }
+}
+
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+/* ===== LOVE LETTER MODAL ===== */
+.letter-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(26, 10, 30, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+  padding: 1.5rem;
+}
+
+.letter-overlay.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.letter-card {
+  position: relative;
+  max-width: 520px;
+  width: 100%;
+  background: linear-gradient(160deg, #2d1233 0%, #1a0a1e 100%);
+  border: 1px solid rgba(232, 117, 138, 0.2);
+  border-radius: 24px;
+  padding: 3rem 2.5rem 2.5rem;
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.5),
+    0 0 60px rgba(232, 117, 138, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transform: translateY(30px) scale(0.95);
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.letter-overlay.visible .letter-card {
+  transform: translateY(0) scale(1);
+}
+
+.farewell-card {
+  max-width: 440px;
+  padding: 2.8rem 2rem 2rem;
+}
+
+.letter-seal {
+  position: absolute;
+  top: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, var(--accent-rose), #d4668a);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(232, 117, 138, 0.5);
+  animation: sealPulse 2.5s ease-in-out infinite;
+}
+
+.letter-seal svg {
+  width: 26px;
+  height: 26px;
+  color: #fff;
+}
+
+@keyframes sealPulse {
+  0%, 100% { box-shadow: 0 4px 20px rgba(232, 117, 138, 0.5); }
+  50% { box-shadow: 0 4px 35px rgba(232, 117, 138, 0.7); }
+}
+
+.letter-greeting {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 4vw, 1.9rem);
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--accent-rose), var(--accent-pink), var(--accent-gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.letter-body {
+  margin-bottom: 2rem;
+}
+
+.letter-body p {
+  font-family: var(--font-body);
+  font-size: clamp(0.9rem, 2.5vw, 1.02rem);
+  line-height: 1.8;
+  color: var(--text-secondary);
+  font-weight: 300;
+  margin-bottom: 1.2rem;
+  text-align: left;
+}
+
+.letter-body p:last-child {
+  margin-bottom: 0;
+}
+
+.letter-sign {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(232, 117, 138, 0.15);
+}
+
+.letter-sign-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--accent-rose);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.letter-sign span {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--accent-pink);
+  font-weight: 600;
+}
+
+.letter-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  color: var(--text-muted);
+}
+
+.letter-close svg {
+  width: 18px;
+  height: 18px;
+}
+
+.letter-close:hover {
+  background: rgba(232, 117, 138, 0.2);
+  color: var(--accent-pink);
+  transform: rotate(90deg);
+}
+
+/* ===== FOOTER ===== */
+.site-footer {
+  text-align: center;
+  padding: 3rem 1rem 2rem;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.footer-heart {
+  width: 14px;
+  height: 14px;
+  color: var(--accent-rose);
+  vertical-align: middle;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .onboarding-content {
+    padding: 1.5rem;
+  }
+
+  .onboarding-icons {
+    gap: 0.8rem;
+  }
+
+  .onboarding-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .btn-continue {
+    padding: 0.85rem 2.2rem;
+    font-size: 0.9rem;
+  }
+
+  .page-header {
+    padding: 1.5rem 1rem 1rem;
+  }
+
+  .year-tabs {
+    gap: 0.4rem;
+  }
+
+  .year-tab {
+    padding: 0.5rem 1.2rem;
+    font-size: 0.78rem;
+  }
+
+  .book-nav {
+    gap: 1.2rem;
+  }
+
+  .nav-btn {
+    width: 42px;
+    height: 42px;
+  }
+
+  .swipe-hint {
+    display: flex;
+  }
+
+  #flipbook .cover-page {
+    padding: 1.5rem;
+  }
+
+  #flipbook .cover-page .cover-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  #flipbook .cover-page h2 {
+    font-size: 1.1rem;
+  }
+
+  #flipbook .page-caption {
+    padding: 1rem 0.75rem 0.75rem;
+  }
+
+  .letter-card {
+    padding: 2.5rem 1.5rem 2rem;
+    border-radius: 20px;
+  }
+
+  .letter-greeting {
+    font-size: 1.3rem;
+  }
+
+  .letter-body p {
+    font-size: 0.88rem;
+    line-height: 1.7;
+  }
+}
+
+@media (max-width: 480px) {
+  .onboarding-title {
+    font-size: 1.6rem;
+  }
+
+  .page-header h1 {
+    font-size: 1.4rem;
+  }
+
+  .year-tab {
+    padding: 0.45rem 1rem;
+    font-size: 0.72rem;
+  }
+}
+
+/* ===== UTILITY ANIMATIONS ===== */
+.fade-in {
+  animation: fadeIn 0.8s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.slide-up {
+  animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
